@@ -1,41 +1,8 @@
-theia@theiadocker-tudorandrian:/home/project/final_project$ python3
-Python 3.10.12 (main, Aug 15 2025, 14:32:43) [GCC 11.4.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> from emotion_detection import emotion_detector
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-  File "/home/project/final_project/emotion_detection.py", line 1, in <module>
-    import requests
-ModuleNotFoundError: No module named 'requests'
->>> emotion_detector("I love this new technology")
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-NameError: name 'emotion_detector' is not defined
->>> exit()
-theia@theiadocker-tudorandrian:/home/project/final_project$ python3 -m pip install requests
-Defaulting to user installation because normal site-packages is not writeable
-Collecting requests
-  Downloading requests-2.34.2-py3-none-any.whl (73 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 KB 2.5 MB/s eta 0:00:00
-Collecting charset_normalizer<4,>=2
-  Downloading charset_normalizer-3.4.7-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (216 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.9/216.9 KB 14.7 MB/s eta 0:00:00
-Collecting certifi>=2023.5.7
-  Downloading certifi-2026.4.22-py3-none-any.whl (135 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 135.7/135.7 KB 23.6 MB/s eta 0:00:00
-Collecting idna<4,>=2.5
-  Downloading idna-3.15-py3-none-any.whl (72 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 72.3/72.3 KB 15.5 MB/s eta 0:00:00
-Collecting urllib3<3,>=1.26
-  Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
-     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.1/131.1 KB 22.6 MB/s eta 0:00:00
-Installing collected packages: urllib3, idna, charset_normalizer, certifi, requests
-Successfully installed certifi-2026.4.22 charset_normalizer-3.4.7 idna-3.15 requests-2.34.2 urllib3-2.7.0
-theia@theiadocker-tudorandrian:/home/project/final_project$ python3
-Python 3.10.12 (main, Aug 15 2025, 14:32:43) [GCC 11.4.0] on linux
-Type "help", "copyright", "credits" or "license" for more information.
->>> from emotion_detection import emotion_detector
->>> emotion_detector("I love this new technology")
-'{"emotionPredictions":[{"emotion":{"anger":0.0132405795, "disgust":0.0020517302, "fear":0.009090992, "joy":0.9699522, "sadness":0.054984167}, "target":"", "emotionMentions":[{"span":{"begin":0, "end":26, "text":"I love this new technology"}, "emotion":{"anger":0.0132405795, "disgust":0.0020517302, "fear":0.009090992, "joy":0.9699522, "sadness":0.054984167}}]}], "producerId":{"name":"Ensemble Aggregated Emotion Workflow", "version":"0.0.1"}}'
->>> exit()
-theia@theiadocker-tudorandrian:/home/project/final_project$ 
+import requests
+
+def emotion_detector(text_to_analyze):
+    url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
+    myobj = {"raw_document": {"text": text_to_analyze}}
+    response = requests.post(url, json=myobj, headers=header)
+    return response.text
